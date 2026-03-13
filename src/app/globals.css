@@ -1,26 +1,44 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+	--font-sans:
+		system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+		Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+	--font-mono:
+		"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+		"Liberation Mono", "Courier New", monospace;
+
+	--color-accent-green: #10b981;
+	--color-accent-red: #ef4444;
+	--color-accent-amber: #f59e0b;
+	--color-accent-cyan: #06b6d4;
+
+	--color-bg-page: #0a0a0a;
+	--color-bg-surface: #0f0f0f;
+	--color-bg-elevated: #1a1a1a;
+	--color-bg-input: #111111;
+
+	--color-border-primary: #2a2a2a;
+	--color-border-focus: #10b981;
+
+	--color-text-primary: #fafafa;
+	--color-text-secondary: #6b7280;
+	--color-text-tertiary: #4b5563;
+
+	/* Standard mappings for accessibility/generic use */
+	--color-background: var(--color-bg-page);
+	--color-foreground: var(--color-text-primary);
+	--color-primary: var(--color-accent-green);
+	--color-primary-foreground: var(--color-bg-page);
+	--color-border: var(--color-border-primary);
+	--color-ring: var(--color-border-focus);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+	* {
+		@apply border-border-primary outline-accent-green/50;
+	}
+	body {
+		@apply bg-bg-page text-text-primary font-sans antialiased;
+	}
 }
