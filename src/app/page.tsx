@@ -2,14 +2,29 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { CodeEditor } from "@/components/editor/code-editor";
 import { Button } from "@/components/ui/button";
 import { TableRow } from "@/components/ui/table-row";
-import { Textarea } from "@/components/ui/textarea";
 import { Toggle } from "@/components/ui/toggle";
 import { cn } from "@/lib/utils";
 
+const DEFAULT_CODE = `function calculateTotal(items) {
+  var total = 0;
+  for (var i = 0; i < items.length; i++) {
+    total = total + items[i].price;
+  }
+  
+  if (total > 100) {
+    console.log("discount applied");
+    total = total * 0.9;
+  }
+  
+  return total;
+}`;
+
 export default function Home() {
 	const [isRoastMode, setIsRoastMode] = useState(true);
+	const [code, setCode] = useState(DEFAULT_CODE);
 
 	return (
 		<div className="flex flex-col items-center px-10 py-20 space-y-16">
@@ -27,34 +42,11 @@ export default function Home() {
 
 			{/* Editor Area */}
 			<div className="w-full max-w-[780px] space-y-8">
-				<div className="border border-border-primary bg-bg-input overflow-hidden flex flex-col">
-					{/* Window Header */}
-					<div className="h-10 border-b border-border-primary bg-bg-page flex items-center px-4 justify-between">
-						<div className="flex gap-1.5">
-							<div className="h-3 w-3 rounded-full bg-accent-red" />
-							<div className="h-3 w-3 rounded-full bg-accent-amber" />
-							<div className="h-3 w-3 rounded-full bg-accent-green" />
-						</div>
-					</div>
-					{/* Textarea */}
-					<Textarea
-						placeholder="Paste your code here..."
-						className="min-h-[320px] border-none focus-visible:ring-0 bg-transparent resize-none p-6 text-[13px] leading-relaxed"
-						defaultValue={`function calculateTotal(items) {
-  var total = 0;
-  for (var i = 0; i < items.length; i++) {
-    total = total + items[i].price;
-  }
-  
-  if (total > 100) {
-    console.log("discount applied");
-    total = total * 0.9;
-  }
-  
-  return total;
-}`}
-					/>
-				</div>
+				<CodeEditor
+					initialValue={DEFAULT_CODE}
+					onChange={setCode}
+					className="min-h-[420px]"
+				/>
 
 				{/* Actions Bar */}
 				<div className="flex items-center justify-between">
