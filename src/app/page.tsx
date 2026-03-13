@@ -22,9 +22,14 @@ const DEFAULT_CODE = `function calculateTotal(items) {
   return total;
 }`;
 
+const MAX_CHARACTERS = 10000;
+
 export default function Home() {
 	const [isRoastMode, setIsRoastMode] = useState(true);
 	const [code, setCode] = useState(DEFAULT_CODE);
+
+	const isOverLimit = code.length > MAX_CHARACTERS;
+	const isEmpty = code.trim().length === 0;
 
 	return (
 		<div className="flex flex-col items-center px-10 py-20 space-y-16">
@@ -45,6 +50,7 @@ export default function Home() {
 				<CodeEditor
 					initialValue={DEFAULT_CODE}
 					onChange={setCode}
+					maxCharacters={MAX_CHARACTERS}
 					className="min-h-[420px]"
 				/>
 
@@ -68,10 +74,19 @@ export default function Home() {
 							</label>
 						</div>
 						<span className="text-text-tertiary font-mono text-xs">
-							{"//"} maximum sarcasm enabled
+							{isOverLimit ? (
+								<span className="text-accent-red">{"//"} code too long</span>
+							) : (
+								<span>{"//"} maximum sarcasm enabled</span>
+							)}
 						</span>
 					</div>
-					<Button className="font-bold py-2.5 px-8">$ roast_my_code</Button>
+					<Button
+						className="font-bold py-2.5 px-8"
+						disabled={isOverLimit || isEmpty}
+					>
+						$ roast_my_code
+					</Button>
 				</div>
 
 				{/* Stats Footer */}

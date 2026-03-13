@@ -1,6 +1,7 @@
 import { Check, Copy, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { LanguageSelector } from "./language-selector";
 
 interface EditorToolbarProps {
@@ -8,6 +9,8 @@ interface EditorToolbarProps {
 	onLanguageChange: (value: string) => void;
 	onFormat: () => void;
 	onCopy: () => void;
+	characterCount: number;
+	maxCharacters: number;
 }
 
 export function EditorToolbar({
@@ -15,8 +18,11 @@ export function EditorToolbar({
 	onLanguageChange,
 	onFormat,
 	onCopy,
+	characterCount,
+	maxCharacters,
 }: EditorToolbarProps) {
 	const [copied, setCopied] = useState(false);
+	const isOverLimit = characterCount > maxCharacters;
 
 	const handleCopy = () => {
 		onCopy();
@@ -39,24 +45,35 @@ export function EditorToolbar({
 				</Button>
 			</div>
 
-			<Button
-				variant="ghost"
-				size="sm"
-				onClick={handleCopy}
-				className="text-text-secondary hover:text-text-primary gap-1.5"
-			>
-				{copied ? (
-					<>
-						<Check size={14} className="text-accent-green" />
-						<span>Copied!</span>
-					</>
-				) : (
-					<>
-						<Copy size={14} />
-						<span>Copy</span>
-					</>
-				)}
-			</Button>
+			<div className="flex items-center gap-4">
+				<div
+					className={cn(
+						"text-[11px] font-mono transition-colors",
+						isOverLimit ? "text-accent-red" : "text-text-tertiary",
+					)}
+				>
+					{characterCount.toLocaleString()} / {maxCharacters.toLocaleString()}
+				</div>
+
+				<Button
+					variant="ghost"
+					size="sm"
+					onClick={handleCopy}
+					className="text-text-secondary hover:text-text-primary gap-1.5"
+				>
+					{copied ? (
+						<>
+							<Check size={14} className="text-accent-green" />
+							<span>Copied!</span>
+						</>
+					) : (
+						<>
+							<Copy size={14} />
+							<span>Copy</span>
+						</>
+					)}
+				</Button>
+			</div>
 		</div>
 	);
 }

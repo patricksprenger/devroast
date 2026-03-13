@@ -21,17 +21,20 @@ interface CodeEditorProps {
 	initialValue?: string;
 	onChange?: (value: string) => void;
 	className?: string;
+	maxCharacters?: number;
 }
 
 export function CodeEditor({
 	initialValue = "",
 	onChange,
 	className,
+	maxCharacters = 10000,
 }: CodeEditorProps) {
 	const editorRef = useRef<HTMLDivElement>(null);
 	const viewRef = useRef<EditorView | null>(null);
 	const [language, setLanguage] = useState("plaintext");
 	const [code, setCode] = useState(initialValue);
+	const characterCount = code.length;
 
 	// Persistence
 	useEffect(() => {
@@ -180,6 +183,8 @@ export function CodeEditor({
 				onLanguageChange={syncLanguage}
 				onFormat={handleFormat}
 				onCopy={handleCopy}
+				characterCount={characterCount}
+				maxCharacters={maxCharacters}
 			/>
 		</div>
 	);
