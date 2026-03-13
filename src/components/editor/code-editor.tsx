@@ -28,7 +28,7 @@ export function CodeEditor({
 	initialValue = "",
 	onChange,
 	className,
-	maxCharacters = 10000,
+	maxCharacters = 1000,
 }: CodeEditorProps) {
 	const editorRef = useRef<HTMLDivElement>(null);
 	const viewRef = useRef<EditorView | null>(null);

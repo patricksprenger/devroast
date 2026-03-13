@@ -108,6 +108,7 @@ export default function LeaderboardPage() {
 								code={entry.code}
 								lang={entry.language}
 								className="border-none"
+								withHeader={false}
 							/>
 						</div>
 					))}

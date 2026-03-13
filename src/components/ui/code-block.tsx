@@ -7,6 +7,7 @@ interface CodeBlockProps {
 	lang?: string;
 	filename?: string;
 	className?: string;
+	withHeader?: boolean;
 }
 
 export async function CodeBlock({
@@ -14,6 +15,7 @@ export async function CodeBlock({
 	lang = "typescript",
 	filename,
 	className,
+	withHeader = true,
 }: CodeBlockProps) {
 	const html = await codeToHtml(code, {
 		lang,
@@ -27,19 +29,23 @@ export async function CodeBlock({
 				className,
 			)}
 		>
-			<div className="flex items-center justify-between border-b border-border-primary bg-bg-page px-4 py-2">
-				<div className="flex items-center gap-2">
-					<div className="flex gap-1.5">
-						<div className="h-3 w-3 rounded-full bg-accent-red" />
-						<div className="h-3 w-3 rounded-full bg-accent-amber" />
-						<div className="h-3 w-3 rounded-full bg-accent-green" />
+			{withHeader && (
+				<div className="flex items-center justify-between border-b border-border-primary bg-bg-page px-4 py-2">
+					<div className="flex items-center gap-2">
+						<div className="flex gap-1.5">
+							<div className="h-3 w-3 rounded-full bg-accent-red" />
+							<div className="h-3 w-3 rounded-full bg-accent-amber" />
+							<div className="h-3 w-3 rounded-full bg-accent-green" />
+						</div>
+						{filename && (
+							<span className="ml-2 text-xs text-text-secondary">
+								{filename}
+							</span>
+						)}
 					</div>
-					{filename && (
-						<span className="ml-2 text-xs text-text-secondary">{filename}</span>
-					)}
+					<CopyButton code={code} />
 				</div>
-				<CopyButton code={code} />
-			</div>
+			)}
 			<div
 				className="overflow-x-auto p-4 text-[13px] leading-relaxed shiki-container"
 				dangerouslySetInnerHTML={{ __html: html }}

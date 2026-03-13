@@ -22,7 +22,7 @@ const DEFAULT_CODE = `function calculateTotal(items) {
   return total;
 }`;
 
-const MAX_CHARACTERS = 10000;
+const MAX_CHARACTERS = 1000;
 
 export default function Home() {
 	const [isRoastMode, setIsRoastMode] = useState(true);
