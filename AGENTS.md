@@ -20,3 +20,4 @@ Next.js app for code roasting and ranking, built with Tailwind CSS 4.0, Biome, a
 6. **Code Quality**: Strict Biome linting/formatting.
 7. **Exports**: Named exports only. No `export default` for components.
 8. **Specifications**: Always create a spec in `specs/` before implementing new features (follow `specs/AGENTS.md`).
+9. **Workflow**: NEVER commit or push changes unless explicitly requested by the user.
