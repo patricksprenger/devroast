@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { TableRow } from "@/components/ui/table-row";
+import { CodeBlock } from "@/components/ui/code-block";
 import { api } from "@/trpc/server";
 import { LeaderboardHeader } from "./leaderboard-header";
+import { LeaderboardRow } from "./leaderboard-row";
 
 export async function LeaderboardSection() {
 	const { items, totalCount } = await api.getLeaderboard();
@@ -11,13 +12,20 @@ export async function LeaderboardSection() {
 			<div className="border border-border-primary bg-bg-surface overflow-hidden mt-4">
 				<LeaderboardHeader />
 				{items.map((roast, index) => (
-					<TableRow
+					<LeaderboardRow
 						key={roast.id}
 						rank={`#${index + 1}`}
 						score={roast.score.toString()}
 						codePreview={roast.roastQuote}
 						language={roast.language}
-					/>
+					>
+						<CodeBlock
+							code={roast.code}
+							lang={roast.language}
+							className="border-none"
+							withHeader={false}
+						/>
+					</LeaderboardRow>
 				))}
 				{items.length === 0 && (
 					<div className="p-8 text-center text-text-tertiary font-mono text-sm">

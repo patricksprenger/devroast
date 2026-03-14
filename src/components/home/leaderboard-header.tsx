@@ -5,6 +5,7 @@ export function LeaderboardHeader() {
 			<div className="w-[60px]">score</div>
 			<div className="flex-1">code</div>
 			<div className="w-[100px] text-right">lang</div>
+			<div className="w-4" />
 		</div>
 	);
 }

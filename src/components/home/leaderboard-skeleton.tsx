@@ -14,6 +14,7 @@ export function LeaderboardSkeleton() {
 					<div className="h-4 w-[60px] bg-border-primary rounded" />
 					<div className="h-4 flex-1 bg-border-primary rounded" />
 					<div className="h-4 w-[100px] bg-border-primary rounded ml-auto" />
+					<div className="h-4 w-4 bg-border-primary rounded" />
 				</div>
 			))}
 		</div>
