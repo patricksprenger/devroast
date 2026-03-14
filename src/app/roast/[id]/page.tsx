@@ -77,7 +77,6 @@ export default async function RoastResultPage({ params }: RoastPageProps) {
 
 	return (
 		<div className="flex flex-col min-h-screen bg-bg-page">
-
 			<main className="flex flex-col gap-10 px-20 py-10 max-w-[1440px] mx-auto w-full">
 				{/* Score Hero Section */}
 				<section className="flex items-center gap-12 w-full">

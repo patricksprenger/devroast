@@ -31,7 +31,7 @@ export function detectLanguage(code: string): string {
 
 export async function formatCode(
 	code: string,
-	language: string,
+	_language: string,
 ): Promise<string> {
 	// For now, we'll implement a simple trim.
 	// In a real scenario, we could call a server-side Biome formatter or a client-side Prettier.

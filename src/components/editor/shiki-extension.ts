@@ -47,6 +47,7 @@ export function shikiHighlighting(language: string) {
 
 					try {
 						const tokens = highlighter.codeToTokens(code, {
+							// biome-ignore lint/suspicious/noExplicitAny: Shiki expects specific string union
 							lang: (language === "plaintext" ? "text" : language) as any,
 							theme: "vesper",
 						});

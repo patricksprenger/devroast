@@ -32,8 +32,8 @@ export default async function LeaderboardPage() {
 					{entries.map((entry, index) => (
 						<LeaderboardRow
 							key={entry.id}
-							rank={(index + 1).toString()}
-							score={Number(entry.score).toFixed(1)}
+							rank={`#${index + 1}`}
+							score={entry.score.toString()}
 							language={entry.language}
 							code={entry.code}
 						>
@@ -45,6 +45,11 @@ export default async function LeaderboardPage() {
 							/>
 						</LeaderboardRow>
 					))}
+					{entries.length === 0 && (
+						<div className="p-8 text-center text-text-tertiary font-mono text-sm">
+							{"//"} no roasts yet. be the first?
+						</div>
+					)}
 				</div>
 			</div>
 		</div>
