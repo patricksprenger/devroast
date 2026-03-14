@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { HomeEditor } from "@/components/home/home-editor";
+import { LeaderboardSection } from "@/components/home/leaderboard-section";
+import { LeaderboardSkeleton } from "@/components/home/leaderboard-skeleton";
 import { StatsFooter } from "@/components/metrics/stats-footer";
-import { TableRow } from "@/components/ui/table-row";
 
 export default function Home() {
 	return (
@@ -44,38 +46,9 @@ export default function Home() {
 					{"//"} the worst code on the internet, ranked by shame
 				</p>
 
-				<div className="border border-border-primary bg-bg-surface overflow-hidden mt-4">
-					<TableRow
-						rank="#1"
-						score="1.2"
-						codePreview='eval(prompt("enter code")); document.write(response); // trust user'
-						language="javascript"
-					/>
-					<TableRow
-						rank="#2"
-						score="1.8"
-						codePreview="if (x == true) { return true; } else if (x == false) { return false; }"
-						language="typescript"
-					/>
-					<TableRow
-						rank="#3"
-						score="2.1"
-						codePreview="SELECT * FROM users WHERE 1=1 -- TODO: add authentication"
-						language="sql"
-					/>
-				</div>
-
-				<div className="flex justify-center pt-8">
-					<div className="text-text-tertiary font-mono text-xs opacity-50 flex items-center gap-1">
-						<span>showing top 3 ·</span>
-						<Link
-							href="/leaderboard"
-							className="hover:text-text-primary transition-colors underline-offset-4 hover:underline"
-						>
-							view full leaderboard {">"}
-						</Link>
-					</div>
-				</div>
+				<Suspense fallback={<LeaderboardSkeleton />}>
+					<LeaderboardSection />
+				</Suspense>
 			</section>
 
 			<div className="h-20" />

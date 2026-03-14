@@ -77,25 +77,6 @@ export default async function RoastResultPage({ params }: RoastPageProps) {
 
 	return (
 		<div className="flex flex-col min-h-screen bg-bg-page">
-			{/* Simple Nav (Mocked based on layout) */}
-			<nav className="flex items-center justify-between h-14 px-10 border-b border-border-primary bg-bg-page sticky top-0 z-50">
-				<div className="flex items-center gap-2">
-					<span className="text-accent-green font-mono font-bold text-xl">
-						{">"}
-					</span>
-					<span className="text-text-primary font-mono font-medium text-lg tracking-tight">
-						devroast
-					</span>
-				</div>
-				<div className="flex items-center gap-6">
-					<a
-						href="/leaderboard"
-						className="text-text-secondary hover:text-text-primary font-mono text-[13px] transition-colors"
-					>
-						leaderboard
-					</a>
-				</div>
-			</nav>
 
 			<main className="flex flex-col gap-10 px-20 py-10 max-w-[1440px] mx-auto w-full">
 				{/* Score Hero Section */}
