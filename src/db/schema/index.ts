@@ -45,6 +45,7 @@ export const roasts = pgTable("roasts", {
 	isPrivate: boolean("is_private").default(false).notNull(),
 	authorUsername: varchar("author_username", { length: 50 }),
 	authorAvatarUrl: text("author_avatar_url"),
+	improvedCode: text("improved_code"),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
