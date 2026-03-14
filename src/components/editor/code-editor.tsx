@@ -20,6 +20,7 @@ import { shikiHighlighting } from "./shiki-extension";
 interface CodeEditorProps {
 	initialValue?: string;
 	onChange?: (value: string) => void;
+	onLanguageChange?: (lang: string) => void;
 	className?: string;
 	maxCharacters?: number;
 }
@@ -27,6 +28,7 @@ interface CodeEditorProps {
 export function CodeEditor({
 	initialValue = "",
 	onChange,
+	onLanguageChange,
 	className,
 	maxCharacters = 1000,
 }: CodeEditorProps) {
@@ -57,10 +59,14 @@ export function CodeEditor({
 		[onChange],
 	);
 
-	const syncLanguage = useCallback((newLang: string) => {
-		setLanguage(newLang);
-		localStorage.setItem("devroast-lang", newLang);
-	}, []);
+	const syncLanguage = useCallback(
+		(newLang: string) => {
+			setLanguage(newLang);
+			onLanguageChange?.(newLang);
+			localStorage.setItem("devroast-lang", newLang);
+		},
+		[onLanguageChange],
+	);
 
 	const isFirstRender = useRef(true);
 
