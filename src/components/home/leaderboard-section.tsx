@@ -1,11 +1,11 @@
 import Link from "next/link";
+import { LeaderboardHeader } from "@/components/leaderboard/leaderboard-header";
+import { LeaderboardRow } from "@/components/leaderboard/leaderboard-row";
 import { CodeBlock } from "@/components/ui/code-block";
 import { api } from "@/trpc/server";
-import { LeaderboardHeader } from "./leaderboard-header";
-import { LeaderboardRow } from "./leaderboard-row";
 
 export async function LeaderboardSection() {
-	const { items, totalCount } = await api.getLeaderboard();
+	const { items, totalCount } = await api.getLeaderboard({ limit: 20 });
 
 	return (
 		<>

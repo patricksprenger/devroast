@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { HomeEditor } from "@/components/home/home-editor";
 import { LeaderboardSection } from "@/components/home/leaderboard-section";
-import { LeaderboardSkeleton } from "@/components/home/leaderboard-skeleton";
+import { LeaderboardSkeleton } from "@/components/leaderboard/leaderboard-skeleton";
 import { StatsFooter } from "@/components/metrics/stats-footer";
 
 export default function Home() {
