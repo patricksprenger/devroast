@@ -1,8 +1,12 @@
+"use client";
+
+import NumberFlow from "@number-flow/react";
 import type { ComponentProps } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 import { cn } from "@/lib/utils";
 
 const scoreRing = tv({
+	// ... (omitting base for brevity in edit, but I'll use it in actual call)
 	base: "relative inline-flex items-center justify-center font-mono",
 });
 
@@ -67,9 +71,10 @@ export function ScoreRing({
 
 			<div className="absolute inset-0 flex items-center justify-center pointer-events-none">
 				<div className="flex items-baseline gap-1">
-					<span className="text-[48px] font-bold text-text-primary leading-none">
-						{score}
-					</span>
+					<NumberFlow
+						value={score}
+						className="text-[48px] font-bold text-text-primary leading-none"
+					/>
 					<span className="text-base text-text-tertiary leading-none">
 						/{maxScore}
 					</span>
