@@ -1,4 +1,5 @@
 import { asc, sql } from "drizzle-orm";
+import { z } from "zod";
 import { roasts } from "@/db/schema";
 import { createTRPCRouter, publicProcedure } from "./trpc";
 
@@ -17,25 +18,27 @@ export const appRouter = createTRPCRouter({
 		};
 	}),
 
-	getLeaderboard: publicProcedure.query(async ({ ctx }) => {
-		const [items, [countResult]] = await Promise.all([
-			ctx.db
-				.select()
-				.from(roasts)
-				.where(sql`${roasts.isPrivate} = false`)
-				.orderBy(asc(roasts.score))
-				.limit(3),
-			ctx.db
-				.select({ count: sql<number>`count(*)::int` })
-				.from(roasts)
-				.where(sql`${roasts.isPrivate} = false`),
-		]);
+	getLeaderboard: publicProcedure
+		.input(z.object({ limit: z.number().min(1).max(100).default(3) }))
+		.query(async ({ ctx, input }) => {
+			const [items, [countResult]] = await Promise.all([
+				ctx.db
+					.select()
+					.from(roasts)
+					.where(sql`${roasts.isPrivate} = false`)
+					.orderBy(asc(roasts.score))
+					.limit(input.limit),
+				ctx.db
+					.select({ count: sql<number>`count(*)::int` })
+					.from(roasts)
+					.where(sql`${roasts.isPrivate} = false`),
+			]);
 
-		return {
-			items,
-			totalCount: countResult?.count ?? 0,
-		};
-	}),
+			return {
+				items,
+				totalCount: countResult?.count ?? 0,
+			};
+		}),
 });
 
 export type AppRouter = typeof appRouter;
