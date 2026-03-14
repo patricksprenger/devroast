@@ -5,7 +5,7 @@ import { CodeBlock } from "@/components/ui/code-block";
 import { api } from "@/trpc/server";
 
 export async function LeaderboardSection() {
-	const { items, totalCount } = await api.getLeaderboard({ limit: 20 });
+	const { items, totalCount } = await api.getLeaderboard({ limit: 3 });
 
 	return (
 		<>
