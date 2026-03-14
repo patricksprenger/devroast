@@ -1,10 +1,12 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CodeEditor } from "@/components/editor/code-editor";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
 import { cn } from "@/lib/utils";
+import { api } from "@/trpc/client";
 
 const DEFAULT_CODE = `function calculateTotal(items) {
   var total = 0;
@@ -20,15 +22,31 @@ const DEFAULT_CODE = `function calculateTotal(items) {
   return total;
 }`;
 
-const MAX_CHARACTERS = 1000;
+const MAX_CHARACTERS = 10000;
 
 interface HomeEditorProps {
 	statsFooter: React.ReactNode;
 }
 
 export function HomeEditor({ statsFooter }: HomeEditorProps) {
+	const router = useRouter();
 	const [isRoastMode, setIsRoastMode] = useState(true);
 	const [code, setCode] = useState(DEFAULT_CODE);
+	const [language, setLanguage] = useState("plaintext");
+
+	const { mutate: createRoast, isPending } = api.createRoast.useMutation({
+		onSuccess: (data) => {
+			router.push(`/roast/${data.id}`);
+		},
+	});
+
+	const handleRoast = () => {
+		createRoast({
+			code,
+			language,
+			mode: isRoastMode ? "sarcasm" : "technical",
+		});
+	};
 
 	const isOverLimit = code.length > MAX_CHARACTERS;
 	const isEmpty = code.trim().length === 0;
@@ -38,6 +56,7 @@ export function HomeEditor({ statsFooter }: HomeEditorProps) {
 			<CodeEditor
 				initialValue={DEFAULT_CODE}
 				onChange={setCode}
+				onLanguageChange={setLanguage}
 				maxCharacters={MAX_CHARACTERS}
 				className="min-h-[420px]"
 			/>
@@ -71,9 +90,10 @@ export function HomeEditor({ statsFooter }: HomeEditorProps) {
 				</div>
 				<Button
 					className="font-bold py-2.5 px-8"
-					disabled={isOverLimit || isEmpty}
+					disabled={isOverLimit || isEmpty || isPending}
+					onClick={handleRoast}
 				>
-					$ roast_my_code
+					{isPending ? "$ roasting..." : "$ roast_my_code"}
 				</Button>
 			</div>
 
