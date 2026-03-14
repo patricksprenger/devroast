@@ -2,42 +2,79 @@
 
 import { Collapsible } from "@base-ui/react";
 import { ChevronDown } from "lucide-react";
+import { useState } from "react";
 import { TableRow } from "@/components/ui/table-row";
+import { cn } from "@/lib/utils";
 
 interface LeaderboardRowProps {
 	rank: string;
 	score: string;
-	codePreview: string;
 	language: string;
+	code: string;
 	children: React.ReactNode;
 }
 
 export function LeaderboardRow({
 	rank,
 	score,
-	codePreview,
 	language,
+	code,
 	children,
 }: LeaderboardRowProps) {
+	const [isOpen, setIsOpen] = useState(false);
+	const lineCount = code.trim().split("\n").length;
+	const isCollapsible = lineCount > 4;
+
 	return (
-		<Collapsible.Root className="group/collapsible border-b border-border-primary last:border-0">
-			<Collapsible.Trigger className="w-full text-left outline-none">
-				<div className="flex items-center gap-6 pr-5 transition-colors group-data-[state=open]/collapsible:bg-bg-surface/30 hover:bg-bg-surface/50">
-					<TableRow
-						rank={rank}
-						score={score}
-						codePreview={codePreview}
-						language={language}
-						className="border-none cursor-pointer flex-1 pr-0 hover:bg-transparent"
-					/>
-					<ChevronDown className="w-4 h-4 text-text-tertiary transition-transform duration-200 group-data-[state=open]/collapsible:rotate-180" />
+		<Collapsible.Root
+			open={isOpen}
+			onOpenChange={setIsOpen}
+			className="group/collapsible border-b border-border-primary last:border-0 flex flex-col"
+		>
+			{/* Meta Row */}
+			<TableRow
+				rank={rank}
+				score={score}
+				codePreview=""
+				language={language}
+				className="border-none hover:bg-transparent"
+			/>
+
+			<div className="px-5 pb-5 flex flex-col">
+				<div className="relative">
+					<Collapsible.Panel
+						keepMounted
+						className={cn(
+							"overflow-hidden transition-[max-height] duration-300 ease-in-out",
+							isCollapsible
+								? isOpen
+									? "max-h-[2000px]"
+									: "max-h-[100px]"
+								: "max-h-none",
+						)}
+					>
+						<div className="border border-border-primary/50">{children}</div>
+					</Collapsible.Panel>
+
+					{!isOpen && isCollapsible && (
+						<div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-bg-surface to-transparent pointer-events-none" />
+					)}
 				</div>
-			</Collapsible.Trigger>
-			<Collapsible.Panel className="overflow-hidden transition-[height] duration-200 ease-out data-[state=closed]:h-0">
-				<div className="p-4 bg-bg-surface/5 border-t border-border-primary/30 max-h-[400px] overflow-y-auto">
-					{children}
-				</div>
-			</Collapsible.Panel>
+
+				{isCollapsible && (
+					<div className="mt-3 flex justify-start">
+						<Collapsible.Trigger className="flex items-center gap-1.5 text-[10px] font-mono font-bold text-text-tertiary hover:text-text-primary transition-colors uppercase tracking-widest outline-none group">
+							<span>{isOpen ? "show less" : "show more"}</span>
+							<ChevronDown
+								className={cn(
+									"w-3 h-3 transition-transform duration-200",
+									isOpen && "rotate-180",
+								)}
+							/>
+						</Collapsible.Trigger>
+					</div>
+				)}
+			</div>
 		</Collapsible.Root>
 	);
 }

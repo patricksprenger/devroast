@@ -16,8 +16,8 @@ export async function LeaderboardSection() {
 						key={roast.id}
 						rank={`#${index + 1}`}
 						score={roast.score.toString()}
-						codePreview={roast.roastQuote}
 						language={roast.language}
+						code={roast.code}
 					>
 						<CodeBlock
 							code={roast.code}
