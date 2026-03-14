@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
 	boolean,
 	decimal,
@@ -61,3 +62,14 @@ export const analysisItems = pgTable("analysis_items", {
 	improvedCode: text("improved_code"),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+export const roastsRelations = relations(roasts, ({ many }) => ({
+	analysisItems: many(analysisItems),
+}));
+
+export const analysisItemsRelations = relations(analysisItems, ({ one }) => ({
+	roast: one(roasts, {
+		fields: [analysisItems.roastId],
+		references: [roasts.id],
+	}),
+}));
