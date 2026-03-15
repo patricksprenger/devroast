@@ -84,13 +84,13 @@ export async function GET(req: Request) {
 
 				{/* Roast Quote */}
 				<div tw="text-[32px] text-[#FAFAFA] text-center italic max-w-[800px] leading-relaxed">
-					"{quote}"
+					{`"${quote}"`}
 				</div>
 			</div>
 
 			{/* Meta Info */}
 			<div tw="absolute bottom-10 flex text-[20px] text-[#6B7280]">
-				lang: {lang} · {lines} lines
+				{`lang: ${lang} · ${lines} lines`}
 			</div>
 		</div>,
 		{
