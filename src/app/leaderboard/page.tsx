@@ -1,11 +1,22 @@
+import { asc, sql } from "drizzle-orm";
+import { cacheLife } from "next/cache";
 import { LeaderboardHeroMetrics } from "@/components/leaderboard/hero-metrics";
 import { LeaderboardHeader } from "@/components/leaderboard/leaderboard-header";
 import { LeaderboardRow } from "@/components/leaderboard/leaderboard-row";
 import { CodeBlock } from "@/components/ui/code-block";
-import { api } from "@/trpc/server";
+import { db } from "@/db";
+import { roasts } from "@/db/schema";
 
 export default async function LeaderboardPage() {
-	const { items: entries } = await api.getLeaderboard({ limit: 20 });
+	"use cache";
+	cacheLife("hours");
+
+	const entries = await db
+		.select()
+		.from(roasts)
+		.where(sql`${roasts.isPrivate} = false`)
+		.orderBy(asc(roasts.score))
+		.limit(20);
 
 	return (
 		<div className="flex flex-col min-h-screen bg-bg-page">

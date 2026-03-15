@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -9,6 +10,9 @@ import { Toggle } from "@/components/ui/toggle";
 import { ToggleDemo } from "./toggle-demo";
 
 export default async function ExamplePage() {
+	"use cache";
+	cacheLife("days");
+
 	const variants = ["primary", "secondary", "outline", "ghost"] as const;
 	const sizes = ["sm", "default", "lg"] as const;
 	const badgeVariants = [
@@ -172,24 +176,9 @@ export default async function ExamplePage() {
 					Leaderboard Row
 				</h2>
 				<div className="border border-border-primary bg-bg-surface overflow-hidden">
-					<TableRow
-						rank="#1"
-						score="2.1"
-						codePreview="function calculateTotal(items) { var total = 0; ..."
-						language="javascript"
-					/>
-					<TableRow
-						rank="#2"
-						score="1.8"
-						codePreview="if (x == true) { return true; } else if (x == false) ..."
-						language="typescript"
-					/>
-					<TableRow
-						rank="#3"
-						score="1.2"
-						codePreview="SELECT * FROM users WHERE 1=1 -- TODO: add auth"
-						language="sql"
-					/>
+					<TableRow rank="#1" score="2.1" language="javascript" />
+					<TableRow rank="#2" score="1.8" language="typescript" />
+					<TableRow rank="#3" score="1.2" language="sql" />
 				</div>
 			</section>
 

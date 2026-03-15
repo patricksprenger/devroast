@@ -12,7 +12,6 @@ const cell = tv({
 		type: {
 			rank: "w-10 text-text-tertiary text-[13px]",
 			score: "w-[60px] text-accent-red font-bold text-[13px]",
-			code: "flex-1 text-text-secondary text-xs",
 			lang: "w-[100px] text-text-tertiary text-xs text-right",
 		},
 	},
@@ -23,14 +22,12 @@ export interface TableRowProps
 		VariantProps<typeof tableRow> {
 	rank: string;
 	score: string;
-	codePreview: string;
 	language: string;
 }
 
 export function TableRow({
 	rank,
 	score,
-	codePreview,
 	language,
 	className,
 	...props
@@ -39,7 +36,7 @@ export function TableRow({
 		<div className={cn(tableRow(), className)} {...props}>
 			<div className={cell({ type: "rank" })}>{rank}</div>
 			<div className={cell({ type: "score" })}>{score}</div>
-			<div className={cell({ type: "code" })}>{codePreview}</div>
+			<div className="flex-1" />
 			<div className={cell({ type: "lang" })}>{language}</div>
 		</div>
 	);

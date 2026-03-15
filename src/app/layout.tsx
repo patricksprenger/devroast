@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import Link from "next/link";
+import { Suspense } from "react";
 import { cn } from "@/lib/utils";
 import { TRPCProvider } from "@/trpc/client";
 import "./globals.css";
@@ -42,7 +43,9 @@ export default function RootLayout({
 							</Link>
 						</nav>
 					</header>
-					<main className="pt-14">{children}</main>
+					<main className="pt-14">
+						<Suspense>{children}</Suspense>
+					</main>
 				</TRPCProvider>
 			</body>
 		</html>

@@ -26,20 +26,16 @@ export function LeaderboardRow({
 	const lineCount = lines.length;
 	const isCollapsible = lineCount > 4;
 
-	// Use the first line as a preview for the TableRow column
-	const codePreview = lines[0] || "";
-
 	return (
 		<Collapsible.Root
 			open={isOpen}
 			onOpenChange={setIsOpen}
 			className="group/collapsible border-b border-border-primary last:border-0 flex flex-col"
 		>
-			{/* Meta Row - Restoring the code preview in the column */}
+			{/* Meta Row */}
 			<TableRow
 				rank={rank}
 				score={score}
-				codePreview={codePreview}
 				language={language}
 				className="border-none hover:bg-transparent"
 			/>

@@ -1,11 +1,30 @@
+import { asc, sql } from "drizzle-orm";
+import { cacheLife } from "next/cache";
 import Link from "next/link";
 import { LeaderboardHeader } from "@/components/leaderboard/leaderboard-header";
 import { LeaderboardRow } from "@/components/leaderboard/leaderboard-row";
 import { CodeBlock } from "@/components/ui/code-block";
-import { api } from "@/trpc/server";
+import { db } from "@/db";
+import { roasts } from "@/db/schema";
 
 export async function LeaderboardSection() {
-	const { items, totalCount } = await api.getLeaderboard({ limit: 3 });
+	"use cache";
+	cacheLife("hours");
+
+	const [items, [countResult]] = await Promise.all([
+		db
+			.select()
+			.from(roasts)
+			.where(sql`${roasts.isPrivate} = false`)
+			.orderBy(asc(roasts.score))
+			.limit(3),
+		db
+			.select({ count: sql<number>`count(*)::int` })
+			.from(roasts)
+			.where(sql`${roasts.isPrivate} = false`),
+	]);
+
+	const totalCount = countResult?.count ?? 0;
 
 	return (
 		<>

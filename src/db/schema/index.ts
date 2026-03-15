@@ -40,7 +40,7 @@ export const roasts = pgTable("roasts", {
 	code: text("code").notNull(),
 	language: languageEnum("language").notNull(),
 	score: decimal("score", { precision: 3, scale: 1 }).notNull(),
-	verdict: varchar("verdict", { length: 100 }).notNull(),
+	verdict: varchar("verdict", { length: 300 }).notNull(),
 	roastQuote: text("roast_quote").notNull(),
 	mode: roastModeEnum("mode").default("sarcasm").notNull(),
 	isPrivate: boolean("is_private").default(false).notNull(),
