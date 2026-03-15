@@ -1,6 +1,7 @@
 import { diffLines } from "diff";
 import { eq } from "drizzle-orm";
 import { Share2 } from "lucide-react";
+import type { Metadata } from "next";
 import { cacheLife } from "next/cache";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
@@ -10,12 +11,55 @@ import { CodeBlock } from "@/components/ui/code-block";
 import { DiffLine } from "@/components/ui/diff-line";
 import { ScoreRing } from "@/components/ui/score-ring";
 import { db } from "@/db";
-import { analysisItems, roasts } from "@/db/schema";
+import { roasts } from "@/db/schema";
 
 interface RoastPageProps {
 	params: Promise<{
 		id: string;
 	}>;
+}
+
+export async function generateMetadata({
+	params,
+}: RoastPageProps): Promise<Metadata> {
+	const { id } = await params;
+
+	const roast = await db.query.roasts.findFirst({
+		where: eq(roasts.id, id),
+	});
+
+	if (!roast) return {};
+
+	const lineCount = roast.code.split("\n").length;
+	const ogUrl = new URL("/api/og/roast", "https://devroast.com");
+	ogUrl.searchParams.set("score", roast.score);
+	ogUrl.searchParams.set("verdict", roast.verdict);
+	ogUrl.searchParams.set("quote", roast.roastQuote);
+	ogUrl.searchParams.set("lang", roast.language);
+	ogUrl.searchParams.set("lines", lineCount.toString());
+
+	return {
+		title: `Roast #${id} - devroast`,
+		description: roast.roastQuote,
+		openGraph: {
+			title: `Code Roast Score: ${roast.score}/10`,
+			description: roast.roastQuote,
+			images: [
+				{
+					url: ogUrl.toString(),
+					width: 1200,
+					height: 630,
+					alt: `Roast score ${roast.score}/10 for ${roast.language} code`,
+				},
+			],
+		},
+		twitter: {
+			card: "summary_large_image",
+			title: `Code Roast Score: ${roast.score}/10`,
+			description: roast.roastQuote,
+			images: [ogUrl.toString()],
+		},
+	};
 }
 
 export default async function RoastResultPage({ params }: RoastPageProps) {
