@@ -31,7 +31,10 @@ export async function generateMetadata({
 	if (!roast) return {};
 
 	const lineCount = roast.code.split("\n").length;
-	const ogUrl = new URL("/api/og/roast", "https://devroast.com");
+	const ogUrl = new URL(
+		"/api/og/roast",
+		process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+	);
 	ogUrl.searchParams.set("score", roast.score);
 	ogUrl.searchParams.set("verdict", roast.verdict);
 	ogUrl.searchParams.set("quote", roast.roastQuote);
@@ -42,8 +45,6 @@ export async function generateMetadata({
 		title: `Roast #${id} - devroast`,
 		description: roast.roastQuote,
 		openGraph: {
-			title: `Code Roast Score: ${roast.score}/10`,
-			description: roast.roastQuote,
 			images: [
 				{
 					url: ogUrl.toString(),
@@ -55,8 +56,6 @@ export async function generateMetadata({
 		},
 		twitter: {
 			card: "summary_large_image",
-			title: `Code Roast Score: ${roast.score}/10`,
-			description: roast.roastQuote,
 			images: [ogUrl.toString()],
 		},
 	};

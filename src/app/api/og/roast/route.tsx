@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { ImageResponse } from "takumi";
+import { ImageResponse } from "next/og";
 import { z } from "zod";
 
 const ogSchema = z.object({
@@ -15,9 +15,25 @@ export async function GET(req: Request) {
 	const { searchParams } = new URL(req.url);
 	const parsed = ogSchema.safeParse(Object.fromEntries(searchParams.entries()));
 
+	const fontData = await readFile(
+		join(process.cwd(), "public/fonts/JetBrainsMono-Bold.ttf"),
+	);
+
+	const fonts = [
+		{
+			name: "JetBrainsMono",
+			data: fontData,
+			style: "normal" as const,
+			weight: 700 as const,
+		},
+	];
+
 	if (!parsed.success) {
 		return new ImageResponse(
-			<div tw="flex flex-col items-center justify-center w-full h-full bg-[#0A0A0A] text-[#6B7280]">
+			<div
+				tw="flex flex-col items-center justify-center w-full h-full bg-[#0A0A0A] text-[#6B7280]"
+				style={{ fontFamily: "JetBrainsMono" }}
+			>
 				{/* Branding */}
 				<div tw="absolute top-10 left-0 right-0 flex justify-center">
 					<div tw="flex text-2xl font-bold">
@@ -31,18 +47,17 @@ export async function GET(req: Request) {
 				</div>
 				<div tw="text-xl">The roast data could not be parsed.</div>
 			</div>,
-			{ width: 1200, height: 630 },
+			{ width: 1200, height: 630, fonts },
 		);
 	}
 
 	const { score, verdict, quote, lang, lines } = parsed.data;
 
-	const fontData = await readFile(
-		join(process.cwd(), "public/fonts/JetBrainsMono-Bold.ttf"),
-	);
-
 	return new ImageResponse(
-		<div tw="flex flex-col items-center justify-center w-full h-full bg-[#0A0A0A] border-[1px] border-[#2A2A2A] p-10">
+		<div
+			tw="flex flex-col items-center justify-center w-full h-full bg-[#0A0A0A] border-[1px] border-[#2A2A2A] p-10"
+			style={{ fontFamily: "JetBrainsMono" }}
+		>
 			{/* Branding */}
 			<div tw="absolute top-10 left-0 right-0 flex justify-center">
 				<div tw="flex text-2xl font-bold">
@@ -62,7 +77,7 @@ export async function GET(req: Request) {
 				</div>
 
 				{/* Verdict Badge */}
-				<div tw="flex items-center bg-[#EF4444]/10 border border-[#EF4444]/20 px-4 py-2 rounded-sm mb-8">
+				<div tw="flex items-center bg-[#EF4444]/10 border border-[#EF4444]/20 px-4 py-2 rounded-none mb-8">
 					<div tw="w-2 h-2 rounded-full bg-[#EF4444] mr-2" />
 					<span tw="text-[20px] text-[#EF4444] lowercase">{verdict}</span>
 				</div>
@@ -81,14 +96,7 @@ export async function GET(req: Request) {
 		{
 			width: 1200,
 			height: 630,
-			fonts: [
-				{
-					name: "JetBrainsMono",
-					data: fontData,
-					style: "normal",
-					weight: 700,
-				},
-			],
+			fonts,
 		},
 	);
 }
